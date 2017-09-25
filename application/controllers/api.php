@@ -29,7 +29,7 @@ class Api extends CI_Controller {
 	}
 	
 	public function getAllUsers(){
-        $usersJson = file_get_contents('http://b.com/index.php/Api/Goods/getAllUser');
+        $usersJson = file_get_contents('http://b.com/index.php/Api/Jxcapi/getAllUser');
         $users=json_decode($usersJson,TRUE);
         $data = "";
         foreach ($users as $k=>$v){
@@ -41,6 +41,7 @@ class Api extends CI_Controller {
             $data['cLevelName']=iconv('GB2312', 'UTF-8',"ÁãÊÛ¿Í»§");
             $data['cLevel']="0";
             $data['type']=-10;
+            $data['shop_user_id']=$v['user_id'];
             foreach ($v['address'] as $key=>$value){
                 $address[$key]["linkName"]=$value["consignee"];
                 $address[$key]["linkMobile"]=$value["mobile"];
@@ -50,11 +51,17 @@ class Api extends CI_Controller {
                 $address[$key]["city"]=$value["city_str"];
                 $address[$key]["county"]=$value["county_str"];
                 $address[$key]["address"]=$value["address"];
-                $address[$key]["linkFirst"]=$k==0?1:0;
+                $address[$key]["linkFirst"]= $value["is_default"];
+                $address[$key]["id"]= $value["address_id"];
             }
             $data['linkMans']=json_encode($address,JSON_UNESCAPED_UNICODE);
             $this->mysql_model->insert("ci_contact",$data);
         }
+    }
+
+    public function inserUser(){
+        $data = $this->input->post(NULL,TRUE);
+        $this->mysql_model->insert("ci_contact",$data);
     }
 	 
 }
