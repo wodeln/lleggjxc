@@ -29,7 +29,7 @@ class Api extends CI_Controller {
 	}
 	
 	public function getAllUsers(){
-        $usersJson = file_get_contents('http://b.com/index.php/Api/Jxcapi/getAllUser');
+        $usersJson = file_get_contents('http://www.llegg.cn/index.php/Api/Jxcapi/getAllUser');
         $users=json_decode($usersJson,TRUE);
         $data = "";
         foreach ($users as $k=>$v){
