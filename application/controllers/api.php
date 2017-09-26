@@ -4,7 +4,7 @@ class Api extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
-		$this->common_model->checkpurview();
+//		$this->common_model->checkpurview();
     }
 	
     //其他入库列表高级搜索
@@ -62,6 +62,15 @@ class Api extends CI_Controller {
     public function inserUser(){
         $data = $this->input->post(NULL,TRUE);
         $this->mysql_model->insert("ci_contact",$data);
+    }
+
+    public function updateUser(){
+        $data = $_POST;
+
+        $where = "(shop_user_id=".$data['userId'].")";
+        unset($data["userId"]);
+        $this->mysql_model->update("ci_contact",$data,$where);
+
     }
 	 
 }
