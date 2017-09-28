@@ -29,7 +29,7 @@ class Api extends CI_Controller {
 	}
 	
 	public function getAllUsers(){
-        $usersJson = file_get_contents('http://www.llegg.cn/index.php/Api/Jxcapi/getAllUser');
+        $usersJson = file_get_contents('http://www.llegg.com/index.php/Api/Jxcapi/getAllUser');
         $users=json_decode($usersJson,TRUE);
         $data = "";
         foreach ($users as $k=>$v){
@@ -55,24 +55,50 @@ class Api extends CI_Controller {
                 $address[$key]["id"]= $value["address_id"];
             }
             $data['linkMans']=json_encode($address,JSON_UNESCAPED_UNICODE);
+            $this->save_log($data,__FUNCTION__);
             $this->mysql_model->insert("ci_contact",$data);
         }
     }
 
-    public function inserUser(){
-        $data = $this->input->post(NULL,TRUE);
-        $this->mysql_model->insert("ci_contact",$data);
+    public function insertUser(){
+        $data = $_POST;
+        $this->save_log($data,__FUNCTION__);
+        $res = $this->mysql_model->insert("ci_contact",$data);
+        echo $res;
     }
 
     public function updateUser(){
         $data = $_POST;
-
+        $this->save_log($data,__FUNCTION__);
         $where = "(shop_user_id=".$data['userId'].")";
         unset($data["userId"]);
-        $this->mysql_model->update("ci_contact",$data,$where);
+        $res = $this->mysql_model->update("ci_contact",$data,$where);
+        echo $res;
+    }
+
+    function save_log($res,$functionName="",$url="") {
+        $date = date("Y-m-d", time());
+        //$address = '/var/log/error';
+        $address = './application/apilog';
+        if (!is_dir($address)) {
+            mkdir($address, 0777, true);
+        }
+        $address = $address.'/'.$date . '_data.log';
+        $error_date = date("Y-m-d H:i:s", time());
+        if(!empty($_SERVER['HTTP_REFERER'])) {
+            $file = $_SERVER['HTTP_REFERER'];
+        } else {
+            $file = $_SERVER['REQUEST_URI'];
+        }
+
+        $res_real = "$error_date\t$file\t$functionName";
+        file_put_contents($address, $res_real . PHP_EOL, FILE_APPEND);
+        if($url!=""){
+            file_put_contents($address, $url . PHP_EOL, FILE_APPEND);
+        }
+        $res = var_export($res,true);
+        $res = $res."\n";
+        file_put_contents($address, $res . PHP_EOL, FILE_APPEND);
 
     }
-	 
 }
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
