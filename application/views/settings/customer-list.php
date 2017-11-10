@@ -42,6 +42,9 @@ $(document).keydown(function(event) {
 	        <li>
 	          <input type="text" id="matchCon" class="ui-input ui-input-ph matchCon" value="输入客户编号/ 名称/ 联系人/ 电话查询">
 	        </li>
+            <li>
+                <span id="saler"></span>
+	        </li>
 	        <li><a class="ui-btn mrb" id="search">查询</a></li>
 	      </ul>
 	    </div>

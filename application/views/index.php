@@ -127,6 +127,7 @@ var cacheList = {};	//缓存列表查询
 	getAssistingProp();
 	getAssistingPropGroup();
 	getStaff();
+    getSales();
 	getBatch();
 })();
 //缓存用户配置
@@ -260,6 +261,24 @@ function getStaff() {
 		SYSTEM.salesInfo = [];
 	}
 };
+
+//缓存销售管理员
+function getSales() {
+    if(true) {
+        Public.ajaxGet('<?php echo site_url()?>/basedata/sales?action=list&isDelete=2', {}, function(data){
+            if(data.status === 200) {
+                SYSTEM.salersInfo = data.data.items;
+            } else if (data.status === 250){
+                SYSTEM.salersInfo = [];
+            } else {
+                Public.tips({type: 1, content : data.msg});
+            }
+        });
+    } else {
+        SYSTEM.salersInfo = [];
+    }
+};
+
 //缓存账户信息
 function getAccounts() {
 	if(SYSTEM.isAdmin || SYSTEM.rights.SettAcct_QUERY) {

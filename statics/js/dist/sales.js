@@ -30,7 +30,8 @@ var curRow, curCol, loading, SYSTEM = system = parent.SYSTEM,
 			}
 			if ("add" !== a.status || a.salesId) var c = ["id", a.salesId];
 			else var c = 0;
-			if (this.salesCombo = Business.billSalesCombo($("#sales"), {
+			if (this.salesCombo = Business.billSalerCombo($("#sales"), {
+			// if (this.salesCombo = Business.billSalesCombo($("#sales"), {
 				defaultSelected: c
 			}), this.customerCombo = Business.billCustomerCombo($("#customer"), {
 				defaultSelected: -1,
@@ -46,8 +47,8 @@ var curRow, curCol, loading, SYSTEM = system = parent.SYSTEM,
 					cLevel: a.cLevel
 				};
 				this.$_customer.data("contactInfo", d), this.customerCombo.input.val(a.contactName);
-				for (var e = 0; e < SYSTEM.salesInfo.length; e++) if (SYSTEM.salesInfo[e].id === a.salesId) {
-					this.salesCombo.input.val(SYSTEM.salesInfo[e].name);
+				for (var e = 0; e < SYSTEM.salersInfo.length; e++) if (SYSTEM.salersInfo[e].id === a.salesId) {
+					this.salesCombo.input.val(SYSTEM.salersInfo[e].name);
 					break
 				}
 			} else Public.ajaxPost("../basedata/contact/getRecentlyContact?action=getRecentlyContact", {

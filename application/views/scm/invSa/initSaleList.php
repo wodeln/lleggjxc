@@ -38,9 +38,9 @@ a.ui-btn{margin-left:10px;}
 <div class="wrapper">
   <div class="mod-search cf">
     <div class="fl">
-      <ul class="ul-inline">
+      <ul class="ul-inline" id="saler-menu">
         <li>
-          <input type="text" id="matchCon" class="ui-input ui-input-ph" value="请输入单据号或客户名或备注">
+          <input type="text" id="matchCon" class="ui-input ui-input-ph" value="请输入单据号或客户名或司机名备注">
         </li>
         <li>
           <label>日期:</label>
@@ -49,8 +49,18 @@ a.ui-btn{margin-left:10px;}
           <i>-</i>
           <input type="text" id="endDate" value="2015-04-16" class="ui-input ui-datepicker-input">
         </li>
-        <li><a class="mrb more" id="moreCon">(高级搜索)</a><a class="ui-btn" id="search">查询</a><!--<a class
-="ui-btn ui-btn-refresh" id="refresh" title="刷新"><b></b></a>--></li>
+          <li>
+              <label>销售员:</label>
+              <span class="mod-choose-input" id="filter-saler">
+                    <input type="text" class="ui-input" id="salerAuto">
+                  <span class="ui-icon-ellipsis"></span>
+              </span>
+          </li>
+        <li>
+            <a class="ui-btn" id="search">查询</a>
+<!--            <a class="mrb more" id="moreCon">(高级搜索)</a>-->
+            <!--<a class="ui-btn ui-btn-refresh" id="refresh" title="刷新"><b></b></a>-->
+        </li>
       </ul>
     </div>
     <div class="fr"><a class="ui-btn ui-btn-sp" id="add">新增</a><a class="ui-btn" id="print" target="_blank"

@@ -9,11 +9,19 @@ function initDom() {
 		defaultSelected: 0,
 		trigger: !0,
 		width: 120
-	}, "customertype")
+	}, "customertype");
+	salerCombo = Business.salerCombo($("#saler"), {
+        editable: !1,
+        extraListHtml: "",
+        defaultSelected: 0,
+        trigger: !0,
+        width: 120,
+		height: 400
+	},"saler")
 }
 function initGrid() {
 	var a = Public.setGrid(),
-		b = ["操作", "客户类别", "客户编号", "客户名称", "联系人", "手机", "座机", "QQ/MSN", "期初往来余额", "送货地址", "状态"],
+		b = ["操作", "客户类别", "客户编号", "客户名称", "联系人", "手机", "座机", "QQ/MSN", "销售员","期初往来余额", "送货地址", "状态"],
 		c = !(parent.SYSTEM.isAdmin || parent.SYSTEM.rights.AMOUNT_OUTAMOUNT),
 		d = [{
 			name: "operate",
@@ -57,6 +65,11 @@ function initGrid() {
 		}, {
 			name: "linkIm",
 			index: "linkIm",
+			width: 80,
+			title: !1
+		}, {
+			name: "salerName",
+			index: "salerName",
 			width: 80,
 			title: !1
 		}, {
@@ -137,12 +150,14 @@ function initEvent() {
 	$_matchCon = $("#matchCon"), $_matchCon.placeholder(), $("#search").on("click", function(a) {
 		a.preventDefault();
 		var b = "输入客户编号/ 名称/ 联系人/ 电话查询" === $_matchCon.val() ? "" : $.trim($_matchCon.val()),
-			c = catorageCombo ? catorageCombo.getValue() : -1;
+			c = catorageCombo ? catorageCombo.getValue() : -1,
+			d = salerCombo ? salerCombo.getValue() : -1;
 		$("#grid").jqGrid("setGridParam", {
 			page: 1,
 			postData: {
 				skey: b,
-				categoryId: c
+				categoryId: c,
+				salerId : d
 			}
 		}).trigger("reloadGrid")
 	}), $("#btn-add").on("click", function(a) {

@@ -96,7 +96,6 @@ define(["jquery", "print"], function(a) {
 			width: 60,
 			align: "right",
 			hidden: b,
-			formatter: "currency",
 			formatoptions: {
 				thousandsSeparator: ",",
 				decimalPlaces: Number(j.amountPlaces)

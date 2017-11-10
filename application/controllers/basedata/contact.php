@@ -17,10 +17,12 @@ class Contact extends CI_Controller {
 		$skey   = str_enhtml($this->input->get_post('skey',TRUE));
 		$page   = max(intval($this->input->get_post('page',TRUE)),1);
 		$categoryid   = intval($this->input->get_post('categoryId',TRUE));
+		$salerid   = intval($this->input->get_post('salerId',TRUE));
 		$rows   = max(intval($this->input->get_post('rows',TRUE)),100);
 		$where  = ' and type='.$type;
 	    $where .= $skey ? ' and (contact like "%'.$skey.'%" or linkMans like "%'.$skey.'%")' : '';
 		$where .= $categoryid>0 ? ' and cCategory = '.$categoryid.'' : '';
+		$where .= $salerid>0 ? ' and salerId = '.$salerid.'' : '';
 		$offset = $rows * ($page-1);
 		$data['data']['page']      = $page;                                                      
 		$data['data']['records']   = $this->mysql_model->get_count(CONTACT,'(isDelete=0) '.$where.'');  
@@ -42,6 +44,8 @@ class Contact extends CI_Controller {
 			$v[$arr]['periodMoney']  = (float)$row['periodMoney'];
 			$v[$arr]['difMoney']     = (float)$row['difMoney'];
 			$v[$arr]['remark']       = $row['remark'];
+			$v[$arr]['salerId']      = $row['salerId'];
+			$v[$arr]['salerName']    = $row['salerName'];
 			$v[$arr]['taxRate']      = (float)$row['taxRate'];
 			$v[$arr]['links']        = '';
 			if (strlen($row['linkMans'])>0) {                            
@@ -110,6 +114,8 @@ class Contact extends CI_Controller {
 			$info['name']         = $data['name'];
 			$info['beginDate']    = $data['beginDate'];
 			$info['remark']       = $data['remark'];
+			$info['salerId']      = $data['salerId'];
+			$info['salerName']    = $data['salerName'];
 			$info['cCategory']    = intval($data['cCategory']);
 			$info['cLevel']       = intval($data['cLevel']);
 			$info['amount']       = (float)$data['amount'];
@@ -130,7 +136,8 @@ class Contact extends CI_Controller {
 					$v[$arr]['province']        = isset($row['province']) ? $row['province'] : '';
 					$v[$arr]['mobile']          = isset($row['linkMobile']) ? $row['linkMobile'] : ''; 
 					$v[$arr]['phone']           = isset($row['linkPhone']) ? $row['linkPhone'] : '';
-				} 
+					$v[$arr]['id']              = isset($row['id']) ? $row['id'] : '';
+				}
 		    }
 			$info['links']  = $v;
 		    str_alert(200,'success',$info);
@@ -192,7 +199,7 @@ class Contact extends CI_Controller {
 		$info = array_filter(elements(array(
 					'name','number','amount','beginDate','cCategory',
 					'cCategoryName','cLevel','cLevelName','linkMans'
-					,'periodMoney','remark','type','difMoney')
+					,'periodMoney','remark','type','difMoney','salerId','salerName')
 					,$data));
 		$sql = $this->mysql_model->update(CONTACT,$info,'(id='.$data['id'].')');
 		if ($sql) {

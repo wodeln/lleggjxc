@@ -168,7 +168,7 @@ function(a) {
 			}
 		},
 		l = {
-			userName: /^[a-zA-Z0-9]{4,20}$/,
+			userName: /^[a-zA-Z0-9_-]{4,20}$/,
 			password: /^.*[A-Za-z0-9_-]+.*$/,
 			mobile: /^(13|15|18)[0-9]{9}$/,
 			notAllNum: /[^0-9]+/,

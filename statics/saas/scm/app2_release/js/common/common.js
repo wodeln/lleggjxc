@@ -973,6 +973,64 @@ Business.billSalesCombo = function($_obj, opts){
 	}, opts);
 	return Business.salesCombo($_obj, opts);
 }
+
+Business.billSalerCombo = function($_obj, opts){
+    var defaultPage = Public.getDefaultPage();
+    opts = $.extend(true, {
+        data: function(){
+            if(defaultPage.SYSTEM.salersInfo) {
+                var usingData = []//获取启用状态的;
+                for (var i = 0; i < defaultPage.SYSTEM.salersInfo.length; i++) {
+                    var g = defaultPage.SYSTEM.salersInfo[i];
+                    if(!g['delete']){
+                        usingData.push(g);
+                    }
+                };
+                return usingData;
+            } else {
+                return '../basedata/sales?action=list';
+            }
+        }
+    }, opts);
+    return Business.salerCombo($_obj, opts);
+}
+
+Business.salerCombo = function ($_obj, opts) {
+    if ($_obj.length == 0) { return };
+    var defaultPage = Public.getDefaultPage();
+    var opts = $.extend(true, {
+        data: function(){
+            if(defaultPage.SYSTEM.salersInfo) {
+
+                return defaultPage.SYSTEM.salersInfo;
+            } else {
+                return '../basedata/sales?action=list';
+            }
+        },
+        ajaxOptions: {
+            formatData: function(data){
+                defaultPage.SYSTEM.salersInfo = data.data.items;	//更新
+                return data.data.items;
+            }
+        },
+        width: 120,
+        height: 500,
+        text: 'name',
+        value: 'id',
+        defaultSelected: 0,
+        defaultFlag: false,
+        cache: false,
+        editable: true,
+        emptyOptions: true,
+        callback: {
+            onChange: function(data){
+            }
+        }
+    }, opts);
+    var salersCombo = $_obj.combo(opts).getCombo();
+    return salersCombo;
+}
+
 Business.salesCombo = function($_obj, opts){
 	if ($_obj.length == 0) { return };
 	var defaultPage = Public.getDefaultPage();
@@ -1005,8 +1063,7 @@ Business.salesCombo = function($_obj, opts){
 		},
 		extraListHtml: '<a href="javascript:void(0);" id="quickAddSales" class="quick-add-link"><i class="ui-icon-add"></i>新增职员</a>'
 	}, opts);
-	
-	var salesCombo = $_obj.combo(opts).getCombo();	
+	var salesCombo = $_obj.combo(opts).getCombo();
 	//新增客户
 	$('#quickAddSales').on('click', function(e){
 		e.preventDefault();
@@ -1889,7 +1946,7 @@ Business.categoryCombo = function($_obj, opts, type){
 		},
 		queryDelay: 0
 	}, opts);
-	
+
 	var categoryCombo = $_obj.combo(opts).getCombo();
 	var rights = {
 			'customertype' : 'BUTYPE_ADD',// '客户',
@@ -2745,14 +2802,14 @@ Business.filterSaler = function(){
 				onChange: function(data){
 					if(data) {
 						//this.input.data('ids', data.id);
-						this.input.val(data.number);
+						this.input.val(data.name);
 					}
 				}
 			},
 			trigger:false
 	});
 	//销售员
-	$('#filter-saler .ui-icon-ellipsis').on('click', function(){
+	/*$('#filter-saler .ui-icon-ellipsis').on('click', function(){
 		var $input = $(this).prev('input');
 		$.dialog({
 			width: 510,
@@ -2768,7 +2825,37 @@ Business.filterSaler = function(){
 				return true;
 			}
 		});
-	});
+	});*/
+
+    $('#filter-saler .ui-icon-ellipsis').on('click', function(){
+        var $input = $(this).prev('input');
+        $.dialog({
+            width: 510,
+            height: 500,
+            title: '选择销售员',
+            content: 'url:../settings/saler_batch',
+            data:{isDelete:2},
+            lock: true,
+            ok: function(){
+                // Business.setFilterData(this.content, $input);
+                // console.log($input);
+                // console.log(this.content);
+
+                var numbers = [];
+                var ids = [];
+                for(rowid in this.content.addList){
+
+                    var row = this.content.addList[rowid];
+                    ids.push(rowid);
+                    numbers.push(row.name);
+                }
+                $input.data('ids', ids.join(',')).val(numbers.join(','));
+            },
+            cancel: function(){
+                return true;
+            }
+        });
+    });
 };
 
 //将弹窗中返回的数据记录到相应的input中

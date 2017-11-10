@@ -54,7 +54,7 @@ var api = frameElement.api,
 		loadGrid: function() {
 			$(window).height() - $(".grid-wrap").offset().top - 84;
 			$grid.jqGrid({
-				url: "../basedata/employee?action=list",
+				url: "../basedata/sales?action=list",
 				postData: queryConditions,
 				datatype: "json",
 				autoWidth: !0,
@@ -62,13 +62,13 @@ var api = frameElement.api,
 				altRows: !0,
 				gridview: !0,
 				colModel: [{
-					name: "number",
-					label: "职员编号",
+					name: "id",
+					label: "销售ID",
 					width: 120,
 					title: !1
 				}, {
 					name: "name",
-					label: "职员名称",
+					label: "销售姓名",
 					width: 300,
 					classes: "ui-ellipsis"
 				}],

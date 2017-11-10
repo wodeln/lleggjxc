@@ -14,6 +14,7 @@
 					<th width="100" align="center">手机</th>	
 					<th width="100" align="center">座机</th>	
 					<th width="100" align="center">QQ/MSN</th>	
+					<th width="100" align="center">销售员</th>
 					<th width="100" align="center">送货地址</th>
 					<th width="100" align="center">首要联系人</th>	
 				</tr>
@@ -42,6 +43,7 @@
 					<td ><?php echo @$row1['linkMobile']?></td>
 					<td ><?php echo @$row1['linkPhone']?></td>
 					<td ><?php echo @$row1['linkIm']?></td>
+					<td ><?php echo @$row1['salerName']?></td>
 					<td ><?php echo @$row1['address']?></td>
 					<td ><?php echo @$row1['linkFirst']==1 ? '是' : '否'?></td>
 					<?php }}?>

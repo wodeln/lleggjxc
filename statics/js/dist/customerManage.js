@@ -123,6 +123,7 @@ function postCustomerData() {
 	})
 }
 function getCustomerData() {
+
 	var a = getEntriesData(),
 		b = a.entriesData,
 		c = {
@@ -136,6 +137,8 @@ function getCustomerData() {
 			beginDate: $("#date").val(),
 			amount: Public.currencyToNum($("#receiveFunds").val()),
 			periodMoney: Public.currencyToNum($("#periodReceiveFunds").val()),
+			salerId:salesCombo.getValue(),
+			salerName:salesCombo.getText(),
 
 			linkMans: JSON.stringify(b),
 			remark: $("#note").val() == $("#note")[0].defaultValue ? "" : $("#note").val()
@@ -174,7 +177,12 @@ function getTempData(a) {
 }
 function initField() {
 	if ($("#note").placeholder(), "edit" == oper) {
-		if ($("#number").val(rowData.number), $("#name").val(rowData.name), $("#category").data("defItem", ["id", rowData.cCategory]), rowData.beginDate) {
+		if (
+			$("#number").val(rowData.number),
+				$("#name").val(rowData.name),
+				$("#category").data("defItem", ["id", rowData.cCategory]),
+                $("#saler").data("defItem", ["id", rowData.salerId]),
+				rowData.beginDate) {
 			var a = new Date(rowData.beginDate),
 				b = a.getFullYear(),
 				c = 1 * a.getMonth() + 1,
@@ -233,6 +241,14 @@ function initEvent() {
 			}
 		}
 	}, a);
+
+    salesCombo = Business.salerCombo($("#saler"), {
+        defaultSelected: $("#saler").data("defItem") || void 0,
+        editable: !0,
+        trigger: !0,
+        width: 210
+    });
+
 	var b = $("#date");
 	b.blur(function() {
 		"" == b.val() && b.val(parent.parent.SYSTEM.startDate)
@@ -303,6 +319,7 @@ function bindEventForEnterKey() {
 	})
 }
 function initGrid(a) {
+
 	if (a || (a = []), a.length < 3) for (var b = 3 - a.length, c = 0; b > c; c++) a.push({});
 	a.push({}), $grid.jqGrid({
 		data: a,
@@ -452,7 +469,7 @@ var curRow, curCol, curArrears, api = frameElement.api,
 	linksIds = [],
 	callback = api.data.callback,
 	defaultPage = Public.getDefaultPage(),
-	categoryCombo, levelCombo, categoryData = {},
+	salesCombo,categoryCombo, levelCombo, categoryData = {},
 	$grid = $("#grid"),
 	$_form = $("#manage-form");
 initPopBtns(), init();

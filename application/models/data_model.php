@@ -66,7 +66,7 @@ class Data_model extends CI_Model{
 		            a.*,
 					b.name as contactName,
 					b.number as contactNo,   
-					c.number as salesNo ,c.name as salesName, 
+					c.name as salesName, 
 					d.number as accountNumber ,d.name as accountName   
 				from '.INVOICE.' as a 
 					left join 
@@ -78,11 +78,11 @@ class Data_model extends CI_Model{
 					on a.buId=b.id 
 					left join 
 						(select 
-							id,name,number 
-						from '.STAFF.' 
-						where (isDelete=0) 
-						order by id desc) as c
-					on a.salesId=c.id 
+							uid,name 
+						from '.ADMIN.' 
+						where (status=1) 
+						order by uid desc) as c
+					on a.salesId=c.uid
 					left join 
 					(select 
 						id,name,number

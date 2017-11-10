@@ -106,6 +106,8 @@ a{ outline:none; }
 .conditions-trigger:hover{color: #999;}
 .conditions-expand:hover{color: #999;}
 
+#saler-menu .mod-choose-input{position: relative;*zoom: 1;}
+
 /* 表单样式 */
 .mod-form-rows{zoom:1;}
 .mod-form-rows input,.mod-form-rows select{vertical-align:middle;}

@@ -32,23 +32,34 @@ class InvSa extends CI_Controller {
 	public function saleList(){
 	    $v = array();
 	    $data['status'] = 200;
-		$data['msg']    = 'success'; 
+		$data['msg']    = 'success';
+		$user = $this->session->userdata('jxcsys');
 		$page = max(intval($this->input->get_post('page',TRUE)),1);
 		$rows = max(intval($this->input->get_post('rows',TRUE)),100);
 		$sidx = str_enhtml($this->input->get_post('sidx',TRUE));
 		$sord = str_enhtml($this->input->get_post('sord',TRUE));
 		$transType = intval($this->input->get_post('transType',TRUE));
 		$hxState   = intval($this->input->get_post('hxState',TRUE));
-		$salesId   = intval($this->input->get_post('salesId',TRUE));
+		$salesId   = $this->input->get_post('salesId',TRUE);
 		$matchCon  = str_enhtml($this->input->get_post('matchCon',TRUE));
 		$beginDate = str_enhtml($this->input->get_post('beginDate',TRUE));
 		$endDate   = str_enhtml($this->input->get_post('endDate',TRUE));
 		$order = $sidx ? $sidx.' '.$sord :' a.id desc';
 		$where = ' and a.billType="SALE"';
 		$where .= $transType>0  ? ' and a.transType='.$transType : ''; 
-		$where .= $salesId>0    ? ' and a.salesId='.$salesId : ''; 
-		$where .= $hxState>0    ? ' and a.hxStateCode='.$hxState : ''; 
-		$where .= $matchCon     ? ' and (b.name like "%'.$matchCon.'%" or description like "%'.$matchCon.'%" or billNo like "%'.$matchCon.'%")' : ''; 
+//		$where .= $salesId!=false    ? ' and a.salesId IN('.$salesId')';
+		if($salesId){
+            $where .=' and a.salesId IN('.$salesId.')';
+        }
+        /*if (preg_match("/^xs_?/",$user['username'])){
+            $where .=' and a.salesId='.$user['uid'];
+        }*/
+        $where .= preg_match("/^xs_?/",$user['username']) ? ' and a.salesId='.$user['uid'] : '';
+		$where .= $hxState>0    ? ' and a.hxStateCode='.$hxState : '';
+		if($matchCon && $matchCon!='请输入单据号或客户名或司机名备注'){
+            $where .=' and (b.name like "%'.$matchCon.'%" or description like "%'.$matchCon.'%" or billNo like "%'.$matchCon.'%" or driver_name like "%'.$matchCon.'%")';
+        }
+//		$where .= $matchCon     ? ' and (b.name like "%'.$matchCon.'%" or description like "%'.$matchCon.'%" or billNo like "%'.$matchCon.'%" or driver_name like "%'.$matchCon.'%")' : '';
 		$where .= $beginDate    ? ' and a.billDate>="'.$beginDate.'"' : ''; 
 		$where .= $endDate      ? ' and a.billDate<="'.$endDate.'"' : ''; 
 		$offset = $rows * ($page-1);
@@ -76,6 +87,7 @@ class InvSa extends CI_Controller {
 			$v[$arr]['totalAmount']  = (float)abs($row['totalAmount']);
 			$v[$arr]['userName']     = $row['userName'];
 			$v[$arr]['transTypeName']= $row['transTypeName'];
+			$v[$arr]['driverName']   = $row['driver_name'];
 		}
 		$data['data']['rows']        = $v;
 		die(json_encode($data));

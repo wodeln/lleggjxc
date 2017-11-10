@@ -77,10 +77,15 @@ body{background: #fff;}
     				<div class="label-wrap"><label for="receiveFunds">期初应收款</label></div>
     				<div class="ctn-wrap"><input type="text" value="" class="ui-input" name="receiveFunds" id="receiveFunds"></div>
     			</li>
+                <li class="row-item odd row-saler">
+                    <div class="label-wrap"><label for="saler">销售员</label></div>
+                    <div class="ctn-wrap"><span id="saler"></span></div>
+                </li>
     			<li class="row-item">
     				<div class="label-wrap"><label for="periodReceiveFunds">期初预收款</label></div>
     				<div class="ctn-wrap"><input type="text" value="" class="ui-input" name="periodReceiveFunds" id="periodReceiveFunds"></div>
     			</li>
+
     		</ul>
     		<div class="contacters">
     			<h3 class="dn">联系方式</h3>

@@ -6,6 +6,7 @@ var queryConditions = {
 	billRequiredCheck = system.billRequiredCheck,
 	urlParam = Public.urlParam();
 queryConditions.transType = "150602" === urlParam.transType ? "150602" : "150601";
+Business.filterSaler();
 var THISPAGE = {
 	init: function() {
 		SYSTEM.isAdmin !== !1 || SYSTEM.rights.AMOUNT_OUTAMOUNT || (hiddenAmount = !0), this.initDom(), this.loadGrid(), this.addEvent()
@@ -113,7 +114,11 @@ var THISPAGE = {
 				align: "center",
 				title: !0,
 				classes: "ui-ellipsis"
-			}, {
+			},{
+                name: "driverName",
+                label: "司机",
+                width: 80
+            },{
 				name: "description",
 				label: "备注",
 				index: "description",
@@ -281,7 +286,7 @@ var THISPAGE = {
 			})
 		}
 		$("#search").click(function() {
-			queryConditions.salesId = null, queryConditions.matchCon = "请输入单据号或客户名或备注" === a.$_matchCon.val() ? "" : $.trim(a.$_matchCon.val()), queryConditions.beginDate = a.$_beginDate.val(), queryConditions.endDate = a.$_endDate.val(), THISPAGE.reloadData(queryConditions)
+			queryConditions.salesId = $('#salerAuto').data("ids"), queryConditions.matchCon = "请输入单据号或客户名或备注" === a.$_matchCon.val() ? "" : $.trim(a.$_matchCon.val()), queryConditions.beginDate = a.$_beginDate.val(), queryConditions.endDate = a.$_endDate.val(), THISPAGE.reloadData(queryConditions)
 		}), $("#moreCon").click(function() {
 			queryConditions.matchCon = a.$_matchCon.val(), queryConditions.beginDate = a.$_beginDate.val(), queryConditions.endDate = a.$_endDate.val(), $.dialog({
 				id: "moreCon",
