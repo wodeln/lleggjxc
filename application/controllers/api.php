@@ -45,6 +45,34 @@ class Api extends CI_Controller {
     }
 
     /**
+     * 更新所有用户地址
+     */
+    public function updateAllUsers(){
+        $usersJson = file_get_contents('http://www.llegg.cn/index.php/Api/Jxcapi/getAllUser');
+        $users=json_decode($usersJson,TRUE);
+        $data = "";
+        foreach ($users as $k=>$v){
+            $address="";
+            foreach ($v['address'] as $key=>$value){
+                $address[$key]["linkName"]=$value["consignee"];
+                $address[$key]["linkMobile"]=$value["mobile"];
+                $address[$key]["linkPhone"]="";
+                $address[$key]["linkIm"]="";
+                $address[$key]["province"]=$value["province_str"];
+                $address[$key]["city"]=$value["city_str"];
+                $address[$key]["county"]=$value["country_str"];
+                $address[$key]["address"]=$value["address"];
+                $address[$key]["linkFirst"]= $value["is_default"];
+                $address[$key]["id"]= $value["address_id"];
+            }
+            $data['linkMans']=json_encode($address,JSON_UNESCAPED_UNICODE);
+            $where = "(shop_user_id=".$v['user_id'].")";
+            $this->save_log($data,"user",__FUNCTION__);
+            $this->mysql_model->update("ci_contact",$data,$where);
+        }
+    }
+
+    /**
      * 添加用户
      */
     public function insertUser(){
@@ -61,6 +89,21 @@ class Api extends CI_Controller {
         $data = $_POST;
         $this->save_log($data,"user",__FUNCTION__);
         $where = "(shop_user_id=".$data['userId'].")";
+        $addressFromJson = json_decode($data["linkMans"],TRUE);
+        $address = "";
+        foreach ($addressFromJson as $key=>$value){
+            $address[$key]["linkName"]=$value["consignee"];
+            $address[$key]["linkMobile"]=$value["mobile"];
+            $address[$key]["linkPhone"]="";
+            $address[$key]["linkIm"]="";
+            $address[$key]["province"]=$value["province_str"];
+            $address[$key]["city"]=$value["city_str"];
+            $address[$key]["county"]=$value["country_str"];
+            $address[$key]["address"]=$value["address"];
+            $address[$key]["linkFirst"]= $value["is_default"];
+            $address[$key]["id"]= $value["address_id"];
+        }
+        $data['linkMans']=json_encode($address,JSON_UNESCAPED_UNICODE);
         unset($data["userId"]);
         $res = $this->mysql_model->update("ci_contact",$data,$where);
         echo $res;
