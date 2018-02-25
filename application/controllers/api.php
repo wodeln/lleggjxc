@@ -314,6 +314,16 @@ class Api extends CI_Controller {
     }
     //订单接口结束
 
+    //仓库接口开始
+    /**
+     * 仓库列表
+     */
+    public function getAllStorage(){
+        $list = $this->mysql_model->get_results(STORAGE,'(isDelete=0) order by id desc');
+        die(json_encode($list));
+    }
+    //仓库接口结束
+
     /**
      * 日志方法
      * @param $res 传递 数组/JSON 详情
