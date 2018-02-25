@@ -44,7 +44,7 @@ function initEvent() {
 	})
 }
 function initGrid() {
-	var a = ["操作", "仓库编号", "仓库名称", "状态"],
+	var a = ["操作", "仓库编号", "仓库名称", "状态","ID"],
 		b = [{
 			name: "operate",
 			width: 60,
@@ -65,7 +65,12 @@ function initGrid() {
 			width: 100,
 			formatter: statusFmatter,
 			align: "center"
-		}];
+		},{
+            name: "id",
+            index: "id",
+            width: 50,
+            align: "center"
+        }];
 	$("#grid").jqGrid({
 		//url: "../basedata/invlocation.do?action=list&isDelete=2",
 		url: "../basedata/invlocation?action=list&isDelete=2",
