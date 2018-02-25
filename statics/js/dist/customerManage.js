@@ -141,7 +141,8 @@ function getCustomerData() {
 			salerName:salesCombo.getText(),
 
 			linkMans: JSON.stringify(b),
-			remark: $("#note").val() == $("#note")[0].defaultValue ? "" : $("#note").val()
+			remark: $("#note").val() == $("#note")[0].defaultValue ? "" : $("#note").val(),
+			type: 10
 		};
 	return c.firstLink = a.firstLink, c
 }
